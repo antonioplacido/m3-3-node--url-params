@@ -13,6 +13,12 @@ const home = (req, res) => {
   });
 };
 
+function getPopularArtist (){
+  if ( )
+}
+
+
+
 const PORT = process.env.PORT || 8000;
 
 const app = express();
