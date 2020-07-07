@@ -5,8 +5,13 @@ const morgan = require("morgan");
 const express = require("express");
 
 const { top50 } = require("./data/top50");
-const pageRender = (req, res) =>
-  res.render("pages/top50", { title: "Top 50 Songs Streamed on Spotify" });
+
+const home = (req, res) => {
+  res.render("pages/top50", {
+    title: "Top 50 Songs Streamed on Spotify",
+    top50,
+  });
+};
 
 const PORT = process.env.PORT || 8000;
 
@@ -19,7 +24,7 @@ app.set("view engine", "ejs");
 
 // endpoints here
 
-app.get("/", pageRender);
+app.get("/top50", home);
 
 // handle 404s
 app.get("*", (req, res) => {
