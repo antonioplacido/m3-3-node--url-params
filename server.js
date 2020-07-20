@@ -12,12 +12,28 @@ const home = (req, res) => {
     top50,
   });
 };
+const handlePopularArtist = (req, res) => {
+  let newArtistArray = [];
+  for (let i = 0; i < top50.length; i++) {
+    // console.log(top50[i].artist);
+    newArtistArray.push(top50[i].artist);
+  }
+  function mode(arr) {
+    return arr
+      .sort(
+        (a, b) =>
+          arr.filter((v) => v === a).length - arr.filter((v) => v === b).length
+      )
+      .pop();
+  }
+  const popularArtist = mode(newArtistArray);
+  console.log(popularArtist);
 
-function getPopularArtist (){
-  if ( )
-}
-
-
+  res.render("partials/popularArtist", {
+    title: "Top Artist",
+    songs: top50.filter((song) => song.artist === popularArtist),
+  });
+};
 
 const PORT = process.env.PORT || 8000;
 
@@ -31,6 +47,10 @@ app.set("view engine", "ejs");
 // endpoints here
 
 app.get("/top50", home);
+
+app.get("/top50/popular-artist", handlePopularArtist);
+
+app.get("/top50/:song");
 
 // handle 404s
 app.get("*", (req, res) => {

@@ -1,16 +1,16 @@
-'use strict';
+"use strict";
 
-const express = require('express');
-const bodyParser = require('body-parser');
-const morgan = require('morgan');
+const express = require("express");
+const bodyParser = require("body-parser");
+const morgan = require("morgan");
 
 // Require the DATA
-const { top50 } = require('./data/top50');
+const { top50 } = require("./data/top50");
 
 // FUNCTIONS
 const handleList = (req, res) => {
-  res.render('pages/top50', {
-    title: 'Top 50 Songs Streamed on Spotify',
+  res.render("pages/top50", {
+    title: "Top 50 Songs Streamed on Spotify",
     top50: top50,
   });
 };
@@ -43,8 +43,8 @@ const handlePopularArtist = (req, res) => {
     a.count < b.count ? 1 : -1
   )[0].artist;
 
-  res.render('pages/popularArtist', {
-    title: 'Most Popular Artist',
+  res.render("pages/popularArtist", {
+    title: "Most Popular Artist",
     songs: top50.filter((song) => song.artist === mostPopularArtist),
   });
 };
@@ -52,14 +52,14 @@ const handlePopularArtist = (req, res) => {
 const handleSongRank = (req, res) => {
   const rank = req.params.rank - 1;
   if (top50[rank]) {
-    res.render('pages/songPage', {
+    res.render("pages/songPage", {
       title: `Song #${top50[rank].rank}`,
       song: top50[rank],
     });
   } else {
     res.status(404);
-    res.render('pages/fourOhFour', {
-      title: 'I got nothing',
+    res.render("pages/fourOhFour", {
+      title: "I got nothing",
       path: req.originalUrl,
     });
   }
@@ -67,26 +67,26 @@ const handleSongRank = (req, res) => {
 
 const handleFourOhFour = (req, res) => {
   res.status(404);
-  res.render('pages/fourOhFour', {
-    title: 'I got nothing',
+  res.render("pages/fourOhFour", {
+    title: "I got nothing",
     path: req.originalUrl,
   });
 };
 
 // SERVER SETUP
 const app = express();
-app.use(morgan('dev'));
-app.use(express.static('public'));
+app.use(morgan("dev"));
+app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
 
 // endpoints
-app.get('/top50', handleList);
-app.get('/top50/popular-artist', handlePopularArtist);
-app.get('/top50/song/:rank', handleSongRank);
+app.get("/top50", handleList);
+app.get("/top50/popular-artist", handlePopularArtist);
+app.get("/top50/song/:rank", handleSongRank);
 
 // handle 404s
-app.get('*', handleFourOhFour);
+app.get("*", handleFourOhFour);
 
 app.listen(8000, () => console.log(`Listening on port 8000`));
