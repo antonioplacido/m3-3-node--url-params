@@ -12,6 +12,7 @@ const home = (req, res) => {
     top50,
   });
 };
+
 const handlePopularArtist = (req, res) => {
   let newArtistArray = [];
   for (let i = 0; i < top50.length; i++) {
@@ -27,11 +28,13 @@ const handlePopularArtist = (req, res) => {
       .pop();
   }
   const popularArtist = mode(newArtistArray);
-  console.log(popularArtist);
-
+  console.log(popularArtist); // returns the element popular artist.
+  let popularArtistSongs = top50.filter(
+    (song) => song.artist === popularArtist
+  );
   res.render("partials/popularArtist", {
     title: "Top Artist",
-    songs: top50.filter((song) => song.artist === popularArtist),
+    songs: popularArtistSongs,
   });
 };
 
